@@ -1,0 +1,8 @@
+<?php
+
+namespace App\Providers;
+
+class RabbitEventsBridgeProvider extends \TheP6\RabbitEventsBridge\Providers\MessageRoutingProvider
+{
+    protected string $baseRoutingFile = 'routes-rabbit-events-bridge/routes.php';
+}
