@@ -50,7 +50,7 @@ class HandlerResolver
         $controller = resolve($handlerDescription['className']);
 
         if (!($controller instanceof RabbitEventsBridgeController)) {
-            throw new \InvalidArgumentException("RabbitEventsBridgeController is not an instance of ".RabbitEventsBridgeController::class);
+            throw new \InvalidArgumentException("{$handlerDescription['className']} is not an instance of ".RabbitEventsBridgeController::class);
         }
 
         $reflection = new \ReflectionClass($controller);
