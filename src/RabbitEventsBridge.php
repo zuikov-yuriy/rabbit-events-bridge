@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\MessageBroker;
+namespace TheP6\RabbitEventsBridge;
 
 use TheP6\RabbitEventsBridge\MessageRouter\MessageRouter;
 use Illuminate\Support\Facades\Log;

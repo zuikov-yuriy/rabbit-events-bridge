@@ -2,7 +2,7 @@
 
 namespace TheP6\RabbitEventsBridge\MessageRouter;
 
-use TheP6\RabbitEventsBridge\Controllers\MessageBrokerController;
+use TheP6\RabbitEventsBridge\Controllers\RabbitEventsBridgeController;
 use TheP6\RabbitEventsBridge\Message;
 use ReflectionFunctionAbstract;
 
@@ -49,8 +49,8 @@ class HandlerResolver
     {
         $controller = resolve($handlerDescription['className']);
 
-        if (!($controller instanceof MessageBrokerController)) {
-            throw new \InvalidArgumentException("MessageBrokerController is not an instance of ".MessageBrokerController::class);
+        if (!($controller instanceof RabbitEventsBridgeController)) {
+            throw new \InvalidArgumentException("RabbitEventsBridgeController is not an instance of ".RabbitEventsBridgeController::class);
         }
 
         $reflection = new \ReflectionClass($controller);
