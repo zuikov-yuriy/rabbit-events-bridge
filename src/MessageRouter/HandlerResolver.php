@@ -2,7 +2,13 @@
 
 namespace TheP6\RabbitEventsBridge\MessageRouter;
 
+use ReflectionClass;
+use ReflectionParameter;
 use TheP6\RabbitEventsBridge\Controllers\RabbitEventsBridgeController;
+use TheP6\RabbitEventsBridge\Exceptions\InvalidControllerException;
+use TheP6\RabbitEventsBridge\Exceptions\MethodInaccessibleException;
+use TheP6\RabbitEventsBridge\Exceptions\MethodNowFoundException;
+use TheP6\RabbitEventsBridge\Exceptions\ParameterUnresolvableException;
 use TheP6\RabbitEventsBridge\Message;
 use ReflectionFunctionAbstract;
 
@@ -50,23 +56,19 @@ class HandlerResolver
         $controller = resolve($handlerDescription['className']);
 
         if (!($controller instanceof RabbitEventsBridgeController)) {
-            throw new \InvalidArgumentException("{$handlerDescription['className']} is not an instance of ".RabbitEventsBridgeController::class);
+            throw new InvalidControllerException($handlerDescription['className']);
         }
 
-        $reflection = new \ReflectionClass($controller);
+        $reflection = new ReflectionClass($controller);
 
         if (!$reflection->hasMethod($handlerDescription['method'])) {
-            throw new \InvalidArgumentException(
-                "Method {$handlerDescription['method']} does not exist in {$handlerDescription['className']}"
-            );
+            throw new MethodNowFoundException($handlerDescription['className'], $handlerDescription['method']);
         }
 
         $method = $reflection->getMethod($handlerDescription['method']);
 
         if ($method->isPrivate() || $method->isProtected()) {
-            throw new \InvalidArgumentException(
-                "Method {$handlerDescription['method']} of class {{$handlerDescription['className']}} is not public!"
-            );
+            throw new MethodInaccessibleException($handlerDescription['className'], $handlerDescription['method']);
         }
 
         return [$controller, $method];
@@ -79,8 +81,10 @@ class HandlerResolver
 
         foreach ($parameters as $parameter) {
             if (null === $parameter->getClass()) {
-                throw new \InvalidArgumentException(
-                    "Parameter {$parameter->getName()} of method {$handler['method']} in class {{$handler['className']}} can't be resolved! It is a simple type!"
+                throw new ParameterUnresolvableException(
+                    $parameter->getName(),
+                    $handler['method'],
+                    $handler['className']
                 );
             }
 
@@ -98,7 +102,7 @@ class HandlerResolver
         return $resolvedParameters;
     }
 
-    private function doesExtendFromMessage(\ReflectionParameter $reflectionParameter): bool
+    private function doesExtendFromMessage(ReflectionParameter $reflectionParameter): bool
     {
         if ($reflectionParameter->getClass()->getName() === Message::class) {
             return true;
@@ -113,7 +117,7 @@ class HandlerResolver
             return new Message($routingKey, $payload);
         }
 
-        $messageClassReflection = new \ReflectionClass($messageClass);
+        $messageClassReflection = new ReflectionClass($messageClass);
         $constructorParameters = $messageClassReflection->getConstructor()->getParameters();
 
         $resolvedParameters = [];
@@ -130,8 +134,10 @@ class HandlerResolver
                     continue;
                 }
 
-                throw new \InvalidArgumentException(
-                    "Parameter {$parameter->getName()} of method constructor in class {$messageClass} can't be resolved! It is a simple type!"
+                throw new ParameterUnresolvableException(
+                    $parameter->getName(),
+                    'constructor',
+                    $messageClass
                 );
             }
 
