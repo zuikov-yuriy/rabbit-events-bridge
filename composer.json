@@ -22,7 +22,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "TheP6\\RabbitEventsBridge\\Providers\\RabbitEventsServiceProvider"
+                "TheP6\\RabbitEventsBridge\\Providers\\RabbitEventsBridgeProvider"
             ]
         }
     }
