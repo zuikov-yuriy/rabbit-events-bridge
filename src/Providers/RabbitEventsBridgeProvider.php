@@ -32,7 +32,7 @@ class RabbitEventsBridgeProvider extends ServiceProvider
 
     protected function loadRouting()
     {
-        if (file_exists($this->baseRoutingFile)) {
+        if (file_exists($this->app->basePath($this->baseRoutingFile))) {
             require $this->app->basePath($this->baseRoutingFile);
         }
     }

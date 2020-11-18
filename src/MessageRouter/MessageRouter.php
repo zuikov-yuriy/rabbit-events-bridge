@@ -2,6 +2,8 @@
 
 namespace TheP6\RabbitEventsBridge\MessageRouter;
 
+use TheP6\RabbitEventsBridge\Exceptions\UnknownRoutingKeyException;
+
 class MessageRouter
 {
     protected array $handlerMap  = [];
@@ -11,6 +13,11 @@ class MessageRouter
     public function __construct(HandlerResolver $handlerResolver)
     {
         $this->handlerResolver = $handlerResolver;
+    }
+
+    public function getHandlerMap(): array
+    {
+        return $this->handlerMap;
     }
 
     public function add(string $routingKey, $handler)
@@ -38,7 +45,7 @@ class MessageRouter
     public function handle(string $routingKey, array $payload)
     {
         if (empty($this->handlerMap[$routingKey])) {
-            throw new \InvalidArgumentException("Message broker. {$routingKey} can't be handled! Routing key is not defined!");
+            throw new UnknownRoutingKeyException($routingKey, $this);
         }
 
         $this->handlerResolver->setCurrentPayload($payload);

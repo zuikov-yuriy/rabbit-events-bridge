@@ -3,6 +3,7 @@
 
 namespace TheP6\RabbitEventsBridge;
 
+use TheP6\RabbitEventsBridge\Exceptions\UnknownRoutingKeyException;
 use TheP6\RabbitEventsBridge\MessageRouter\MessageRouter;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
@@ -31,6 +32,8 @@ class RabbitEventsBridge
             );
         } catch (ValidationException $exception) {
             Log::info($exception->getMessage() . ". Errors: " . print_r($exception->errors(), true));
+        } catch (UnknownRoutingKeyException $exception) {
+            Log::info($exception->getMessage());
         } catch (Exception $exception) {
             Log::info("Exception occurred: {$exception->getMessage()}");
             Log::info("Exception stack-trace: {$exception->getTraceAsString()}");
