@@ -96,7 +96,7 @@ class HandlerResolver
                 );
                 continue;
             }
-            $resolvedParameters = resolve($parameter->getClass()->getName());
+            $resolvedParameters[] = resolve($parameter->getClass()->getName());
         }
 
         return $resolvedParameters;
@@ -141,7 +141,7 @@ class HandlerResolver
                 );
             }
 
-            $resolvedParameters = resolve($parameter->getClass()->getName());
+            $resolvedParameters[] = resolve($parameter->getClass()->getName());
         }
 
         return $messageClassReflection->newInstanceArgs($resolvedParameters);
