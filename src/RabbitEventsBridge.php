@@ -33,10 +33,10 @@ class RabbitEventsBridge
         } catch (ValidationException $exception) {
             Log::info($exception->getMessage() . ". Errors: " . print_r($exception->errors(), true));
         } catch (UnknownRoutingKeyException $exception) {
-            Log::info($exception->getMessage());
+            Log::warning($exception->getMessage());
         } catch (Exception $exception) {
-            Log::info("Exception occurred: {$exception->getMessage()}");
-            Log::info("Exception stack-trace: {$exception->getTraceAsString()}");
+            Log::error("Exception occurred: {$exception->getMessage()}");
+            Log::error("Exception stack-trace: {$exception->getTraceAsString()}");
         }
     }
 
