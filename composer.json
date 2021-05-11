@@ -1,5 +1,5 @@
 {
-    "name": "thep6/rabbit-events-bridge",
+    "name": "israel-it/rabbit-events-bridge",
     "description": "Use rabbit-events events from queue and bridge them to separate controllers",
     "type": "library",
     "license": "MIT",
