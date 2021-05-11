@@ -35,23 +35,24 @@ MessageRouter::add("vcrm.enterprise-tags.update", EnterpriseTagController::class
 3. Controllers for message processing must be extended from `TheP6\RabbitEventsBridge\Controllers\RabbitEventsBridgeController`. These Controllers have dependency injection configured for them, no need to make one.
 4. You can define special cases for messages by extending `TheP6\RabbitEventsBridge\Message`. Here you can validate structure of the message in similiar manner as you do for Laravels http requests:
    ```php
+   
    class UpdateExternalTagMessage extends Message
    {
-   protected function rules(): array
-   {
-   return [
-   'id' => [
-   'required',
-   'uuid',
-   ],
+      protected function rules(): array {
+         
+         return [
+               'id' => [
+                  'required',
+                  'uuid',
+               ],
 
-            'name' => [
-                'required',
-                'min:2',
-                'max:255',
-            ],
-
+               'name' => [
+                  'required',
+                  'min:2',
+                  'max:255',
+               ],
         ];
+      }
    }
-}
+   
 ```
