@@ -1,4 +1,5 @@
 **Description**
+
 It is a simple wrapper build atop on nuwber/rabbitevents library to provide routing-like interface to process incoming rabbit messages.
 It makes routing key analogous to http routes, message to http request and defines special controllers to process the message.
 
