@@ -6,13 +6,14 @@ It makes routing key analogous to http routes, message to http request and defin
 **Installation**
 
 1. You must add this repository as a source of packages in composer.json file.
-`{
+```json
+{
 "type": "vcs",
 "url": "https://github.com/Isreal-IT/rabbit-events-bridge"
 }
-`
+```
 2. Install the package using composer
-   `composer install israel-it/rabbitevents-bridge`
+   `composer require israel-it/rabbit-events-bridge`
 
 3. Run following command:
    `php artisan rabbitevents-bridge:install`
