@@ -30,7 +30,11 @@ class Message
         try {
             return $this->validator->validate();
         } catch (ValidationException $e) {
-            throw MessageValidationException::createFromValidationException($e);
+            throw MessageValidationException::createFromValidationException(
+                $e,
+                $this->routingKey,
+                $this->payload
+            );
         }
     }
 
