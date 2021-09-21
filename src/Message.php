@@ -4,6 +4,8 @@ namespace TheP6\RabbitEventsBridge;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Contracts\Validation\Validator as ValidatorContract;
+use Illuminate\Validation\ValidationException;
+use TheP6\RabbitEventsBridge\Exceptions\MessageValidationException;
 
 class Message
 {
@@ -25,7 +27,11 @@ class Message
 
     public function validated(): array
     {
-        return $this->validator->validate();
+        try {
+            return $this->validator->validate();
+        } catch (ValidationException $e) {
+            throw MessageValidationException::createFromValidationException($e);
+        }
     }
 
     public function get(string $key, $default = null)
