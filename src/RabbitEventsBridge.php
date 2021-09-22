@@ -25,19 +25,10 @@ class RabbitEventsBridge
 
     public function handle(string $routingKey, array $payload)
     {
-        try {
-            $this->messageRouter->handle(
-                $routingKey,
-                $this->extractPayload($payload)
-            );
-        } catch (ValidationException $exception) {
-            Log::info($exception->getMessage() . ". Errors: " . print_r($exception->errors(), true));
-        } catch (UnknownRoutingKeyException $exception) {
-            Log::warning($exception->getMessage());
-        } catch (Exception $exception) {
-            Log::error("Exception occurred: {$exception->getMessage()}");
-            Log::error("Exception stack-trace: {$exception->getTraceAsString()}");
-        }
+        $this->messageRouter->handle(
+            $routingKey,
+            $this->extractPayload($payload)
+        );
     }
 
     //fixing typo/bug in rabbitevents library
